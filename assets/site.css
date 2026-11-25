@@ -1,0 +1,147 @@
+:root {
+  --night: #1c0e17;
+  --plum: #3a1c2d;
+  --rose: #d9a3b8;
+  --blush: #f3dfe6;
+  --mist: rgba(243, 223, 230, 0.68);
+  --gold: #d4b27a;
+  --serif: "Italiana", "Didot", "Bodoni 72", serif;
+  --sans: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 18%, rgba(217, 163, 184, 0.16), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(120, 50, 85, 0.35), transparent 70%),
+    var(--night);
+  color: var(--blush);
+  font: 300 1.0625rem/1.7 var(--sans);
+  overflow-x: hidden;
+}
+#dust { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+header, main, footer { position: relative; z-index: 1; }
+
+a { color: inherit; }
+a:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 2px; }
+
+.top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  max-width: 1180px; margin: 0 auto; padding: 28px 24px;
+}
+.mark { font-family: var(--serif); font-size: 1.5rem; letter-spacing: 0.04em; text-decoration: none; margin: 0; }
+.top-link { font-size: 0.95rem; color: var(--mist); text-decoration: none; }
+.top-link:hover { color: var(--blush); }
+
+main { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+/* hero: the dial is the one bold thing on the page */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 56px; align-items: center; min-height: calc(100vh - 100px); padding-bottom: 64px;
+}
+.hero-text { order: -1; }
+h1 {
+  font: 400 clamp(2.6rem, 5.6vw, 4.6rem)/1.04 var(--serif);
+  margin: 0 0 28px; letter-spacing: 0.005em;
+}
+h1 span {
+  display: block; margin-top: 18px;
+  font-size: 0.5em; line-height: 1.2; color: var(--rose);
+}
+.lead { max-width: 34em; color: var(--mist); margin: 0 0 36px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.btn {
+  display: inline-block; padding: 14px 26px; border-radius: 999px;
+  border: 1px solid rgba(243, 223, 230, 0.35); text-decoration: none;
+  font-weight: 400; font-size: 1rem; transition: background 0.25s, border-color 0.25s;
+}
+.btn:hover { border-color: var(--blush); }
+.btn.primary { background: var(--blush); color: var(--night); border-color: var(--blush); }
+.btn.primary:hover { background: #fff; }
+
+.dial { position: relative; width: min(100%, 600px); aspect-ratio: 1; justify-self: center; border-radius: 50%; overflow: hidden; }
+.ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: turn 240s linear infinite; }
+.ring-line { fill: none; stroke: rgba(243, 223, 230, 0.28); stroke-width: 1; }
+.ring-line.faint { stroke: rgba(243, 223, 230, 0.12); }
+.ticks line { stroke: rgba(243, 223, 230, 0.35); stroke-width: 1; }
+.ticks line.major { stroke: var(--gold); stroke-width: 1.5; }
+.ring-text { fill: var(--blush); font: 400 21px var(--sans); letter-spacing: 0.06em; }
+
+.portrait {
+  position: absolute; inset: 22%; border-radius: 50%; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(243, 223, 230, 0.25), 0 0 120px 10px rgba(217, 163, 184, 0.22);
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* a single slow hand: time passing, one sweep per minute */
+.hand {
+  position: absolute; left: 50%; top: 50%; width: 1px; height: 47%;
+  transform-origin: 50% 0; transform: rotate(180deg);
+  background: linear-gradient(to bottom, transparent 0 46%, var(--gold) 46% 100%);
+  animation: sweep 60s linear infinite;
+}
+.hand::after {
+  content: ""; position: absolute; bottom: -3px; left: -3px; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--gold); box-shadow: 0 0 14px 3px rgba(212, 178, 122, 0.7);
+}
+
+@keyframes turn { to { transform: rotate(-360deg); } }
+@keyframes sweep { from { transform: rotate(180deg); } to { transform: rotate(540deg); } }
+
+/* sections */
+section:not(.hero) { padding: 96px 0; border-top: 1px solid rgba(243, 223, 230, 0.1); }
+h2 { font: 400 clamp(2rem, 3.6vw, 2.9rem)/1.1 var(--serif); margin: 0 0 24px; }
+section p { max-width: 38em; }
+.anna > p { color: var(--mist); }
+
+.powers { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 56px; max-width: 920px; }
+.powers li { padding-left: 26px; position: relative; color: var(--mist); }
+.powers li::before { content: "✦"; position: absolute; left: 0; top: 0; color: var(--gold); font-size: 0.85em; }
+.powers strong { color: var(--blush); font-weight: 500; }
+
+.apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; max-width: 920px; }
+.app h3 { font: 400 1.75rem/1.2 var(--serif); margin: 0 0 8px; }
+.app p { margin: 0; color: var(--mist); }
+.app .stores { margin-top: 14px; display: flex; gap: 22px; }
+.stores a { color: var(--rose); text-underline-offset: 4px; }
+.stores a:hover { color: var(--blush); }
+
+.ask { text-align: left; }
+.ask p { color: var(--mist); margin: 0 0 32px; }
+
+.foot {
+  max-width: 1180px; margin: 0 auto; padding: 48px 24px 64px;
+  display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+  border-top: 1px solid rgba(243, 223, 230, 0.1); font-size: 0.92rem; color: var(--mist);
+}
+.foot p { margin: 0 0 6px; }
+.foot .mark { color: var(--blush); margin-bottom: 10px; }
+.foot a { text-underline-offset: 3px; }
+
+/* legal pages */
+.doc { max-width: 760px; padding-bottom: 96px; }
+.doc h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+.doc h2 { font-size: 1.6rem; margin-top: 44px; }
+.doc p, .doc li { color: var(--mist); }
+.doc .updated { color: var(--rose); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; min-height: 0; gap: 40px; padding-top: 8px; }
+  .hero-text { order: 0; }
+  .dial { width: min(100%, 440px); }
+  .powers, .apps { grid-template-columns: 1fr; gap: 24px; }
+  section:not(.hero) { padding: 64px 0; }
+  .top-link { display: none; }
+}
+@media (max-width: 420px) {
+  .top, main, .foot { padding-left: 16px; padding-right: 16px; }
+  .btn { width: 100%; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring, .hand { animation: none; }
+}
