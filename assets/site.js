@@ -84,7 +84,8 @@
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => select(i));
     t.addEventListener('keydown', e => {
-      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      let d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (document.dir === 'rtl') d = -d;
       if (d) { e.preventDefault(); select((i + d + tabs.length) % tabs.length, true); }
     });
   });
