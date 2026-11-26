@@ -39,14 +39,18 @@ a:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-of
   display: flex; justify-content: space-between; align-items: center;
   max-width: 1180px; margin: 0 auto; padding: 28px 24px;
 }
-.mark { font-family: var(--serif); font-size: 1.5rem; letter-spacing: 0.04em; text-decoration: none; margin: 0; }
+.mark { white-space: nowrap; font-family: var(--serif); font-size: 1.5rem; letter-spacing: 0.04em; text-decoration: none; margin: 0; }
 .top-link { font-size: 0.95rem; color: var(--mist); text-decoration: none; }
 .top-link:hover { color: var(--blush); }
 .top-right { display: flex; align-items: center; gap: 18px; }
-.langs { display: flex; gap: 12px; font-size: 0.88rem; }
-.langs a { color: var(--mist); text-decoration: none; padding: 4px 0; }
-.langs a:hover { color: var(--blush); }
-.langs a[aria-current] { color: var(--gold); }
+.langs { display: flex; gap: 4px; }
+.langs button {
+  font: 400 0.85rem/1 var(--sans); color: var(--mist); background: none; cursor: pointer;
+  border: 1px solid transparent; border-radius: 999px; padding: 6px 8px; white-space: nowrap;
+}
+.langs button:hover { color: var(--blush); }
+.langs button[aria-pressed="true"] { color: var(--blush); border-color: rgba(212, 178, 122, 0.6); }
+.langs button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .top-btn { font-size: 0.92rem; text-decoration: none; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--blush); white-space: nowrap; }
 .top-btn:hover { background: var(--blush); color: var(--night); }
 
@@ -84,7 +88,7 @@ h1 span {
 .ring-line.faint { stroke: rgba(243, 223, 230, 0.12); }
 .ticks line { stroke: rgba(243, 223, 230, 0.35); stroke-width: 1; }
 .ticks line.major { stroke: var(--gold); stroke-width: 1.5; }
-.ring-text { fill: var(--blush); font: 400 21px var(--sans); letter-spacing: 0.06em; }
+.ring-text { direction: ltr; fill: var(--blush); font: 400 21px var(--sans); letter-spacing: 0.06em; }
 
 .portrait {
   position: absolute; inset: 22%; border-radius: 50%; overflow: hidden;
@@ -237,8 +241,9 @@ section p { max-width: 38em; }
   .top, main, .foot { padding-left: 16px; padding-right: 16px; }
   .btn { width: 100%; text-align: center; }
   .top-right { gap: 12px; }
-  .langs { gap: 9px; }
-  .top-btn { padding: 7px 12px; font-size: 0.85rem; }
+  .langs { gap: 0; }
+  .langs button { padding: 6px 5px; font-size: 0.8rem; }
+  .top-btn { display: none; }
   .mark { font-size: 1.3rem; }
 }
 @media (prefers-reduced-motion: reduce) {

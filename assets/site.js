@@ -92,3 +92,53 @@
   select(0);
   panels[0].classList.remove('enter');
 })();
+
+// Languages: English is in the page, Russian and Hebrew come from i18n.js.
+// Choice order: ?lang= in the link, then the visitor's last choice, then the browser language.
+(function languages() {
+  const dict = window.I18N || {};
+  const nodes = Array.from(document.querySelectorAll('[data-i18n]'));
+  const en = new Map(nodes.map(n => [n, n.innerHTML]));
+  const enTitle = document.title;
+  const desc = document.querySelector('meta[data-i18n-desc]');
+  const enDesc = desc ? desc.content : '';
+  const buttons = Array.from(document.querySelectorAll('.langs [data-lang]'));
+  const ok = l => l === 'en' || !!dict[l];
+
+  function apply(lang) {
+    const t = dict[lang];
+    nodes.forEach(n => {
+      const v = t ? t[n.dataset.i18n] : en.get(n);
+      if (v !== undefined && n.innerHTML !== v) n.innerHTML = v;
+    });
+    document.title = t ? t._title : enTitle;
+    if (desc) desc.content = t ? t._desc : enDesc;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  }
+
+  function pick() {
+    const q = new URLSearchParams(location.search).get('lang');
+    if (q && ok(q)) return q;
+    try { const s = localStorage.getItem('lang'); if (s && ok(s)) return s; } catch (e) {}
+    for (const l of navigator.languages || [navigator.language || '']) {
+      const c = (l || '').slice(0, 2).toLowerCase();
+      if (c === 'iw') return 'he';
+      if (ok(c)) return c;
+    }
+    return 'en';
+  }
+
+  buttons.forEach(b => b.addEventListener('click', () => {
+    const l = b.dataset.lang;
+    try { localStorage.setItem('lang', l); } catch (e) {}
+    apply(l);
+    const u = new URL(location.href);
+    if (l === 'en') u.searchParams.delete('lang'); else u.searchParams.set('lang', l);
+    history.replaceState(null, '', u);
+  }));
+
+  const first = pick();
+  if (first !== 'en') apply(first);
+})();
