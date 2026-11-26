@@ -62,3 +62,32 @@
   window.addEventListener('resize', size);
   requestAnimationFrame(draw);
 })();
+
+// Decision tree: one voice open at a time. Without JS every panel stays visible.
+(function tree() {
+  const tabs = Array.from(document.querySelectorAll('.tone'));
+  if (!tabs.length) return;
+  const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+  panels.forEach(p => p.querySelectorAll('.branches li').forEach((li, i) => li.style.setProperty('--i', i)));
+
+  function select(i, focus) {
+    tabs.forEach((t, j) => {
+      const on = i === j;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      panels[j].hidden = !on;
+      panels[j].classList.toggle('enter', on);
+    });
+    if (focus) tabs[i].focus();
+  }
+
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(i));
+    t.addEventListener('keydown', e => {
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { e.preventDefault(); select((i + d + tabs.length) % tabs.length, true); }
+    });
+  });
+  select(0);
+  panels[0].classList.remove('enter');
+})();
